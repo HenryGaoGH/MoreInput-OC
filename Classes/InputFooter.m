@@ -39,7 +39,7 @@
     }
     if (self.input.text.length==0) return;
     if(_textChanged && !_ignoreInput) {
-        _textChanged([[InputRow alloc]initWith:self.input.text withV:@""]);
+        _textChanged([[InputRow alloc]initWithK:@"" withShow:self.input.text]);
         self.input.text = @"";
     }
 }
@@ -92,14 +92,18 @@
 #pragma mark - table
 @interface InputFooter (Table) <UITableViewDelegate,UITableViewDataSource> @end
 @implementation InputFooter (Table)
+
 - (UITableView *)selectTable {
     if (!_selectTable) {
         UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
         CGRect rect = [self convertRect: self.bounds toView:keyWindow];
-        _selectTable = [[UITableView alloc] initWithFrame:CGRectMake(rect.origin.x/1.7,rect.origin.y-120,self.frame.size.width*1.7, 130)];
+        _selectTable = [[UITableView alloc] initWithFrame:CGRectMake(rect.origin.x/1.7,rect.origin.y-132,self.frame.size.width*1.7, 130)];
         _selectTable.delegate = self;
         _selectTable.dataSource = self;
         _selectTable.tag = 99999999;
+        _selectTable.layer.shadowColor = [UIColor blackColor].CGColor;
+        _selectTable.layer.shadowOpacity = 0.4;
+        _selectTable.layer.shadowOffset = CGSizeMake(0, 0);
     }
     return _selectTable;
 }

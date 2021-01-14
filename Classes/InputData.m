@@ -3,7 +3,7 @@
 
 
 @implementation InputRow
--(instancetype)initWith:(NSString *)key withV:(NSString *)show {
+-(instancetype)initWithK:(NSString *)key withShow:(NSString *)show {
     self = [super init];
     if (self) {
         self.key = key;

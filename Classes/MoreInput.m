@@ -20,14 +20,14 @@
 - (NSArray<InputRow *> *)currSelectedRows {
     return _selectDatas?:@[];
 }
-- (void)setType:(MoreInputType)type {
+- (void)setType:(MoreSelectType)type {
     _type = type;
     switch (_type) {
-        case MoreInputTypeWatch: {
+        case MoreSelectTypeNone: {
             [self.collection reloadData];
             break;
         }
-        case MoreInputTypeSingleChoice: {
+        case MoreSelectTypeSingle: {
             InputRow *lastRow = self.datas.lastObject;
             if (lastRow) {
                 [self.datas removeAllObjects];
@@ -56,8 +56,8 @@
         _collection.delegate = self;
         _collection.dataSource = self;
         _collection.backgroundColor = [UIColor whiteColor];
-        [_collection registerNib:[UINib nibWithNibName:@"InputItem" bundle:nil] forCellWithReuseIdentifier:@"InputItem"];
-        [_collection registerNib:[UINib nibWithNibName:@"InputFooter" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"InputFooter"];
+        [_collection registerNib:[UINib nibWithNibName:@"InputItem" bundle:[NSBundle bundleForClass:[InputItem class]]] forCellWithReuseIdentifier:@"InputItem"];
+        [_collection registerNib:[UINib nibWithNibName:@"InputFooter" bundle:[NSBundle bundleForClass:[InputFooter class]]] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"InputFooter"];
         [self addSubview:_collection];
     }
     return _collection;
@@ -67,11 +67,11 @@
     self.collection.frame = self.bounds;
 }
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-    if(_type == MoreInputTypeWatch) return CGSizeZero;
+    if(_type == MoreSelectTypeNone) return CGSizeZero;
     return CGSizeMake(120, self.frame.size.height-6);
 }
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    if(_type == MoreInputTypeWatch) return nil;
+    if(_type == MoreSelectTypeNone) return nil;
     if ([kind isEqualToString: UICollectionElementKindSectionFooter]) {
         InputFooter *footer = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"InputFooter" forIndexPath:indexPath];
         footer.ignoreInput = _ignoreInput;
@@ -79,7 +79,7 @@
         footer.inputNumber = self.inputNumber;
         __weak typeof(self) weakSelf = self;
         footer.textChanged = ^(InputRow *row) {
-            if(self->_type == MoreInputTypeSingleChoice) [weakSelf.datas removeAllObjects];
+            if(weakSelf.type == MoreSelectTypeSingle) [weakSelf.datas removeAllObjects];
             [weakSelf.datas addObject:row];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.collection reloadData];
@@ -91,8 +91,7 @@
 }
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
     InputItem *item = item = [collectionView dequeueReusableCellWithReuseIdentifier:@"InputItem" forIndexPath:indexPath];
-    item.item = (_type == MoreInputTypeSingleChoice) ? _datas.firstObject : _datas[indexPath.row];
-//    item.canEdit = (_type != MoreInputTypeWatch);
+    item.item = (_type == MoreSelectTypeSingle) ? _datas.firstObject : _datas[indexPath.row];
     __weak typeof(self) weakSelf = self;
     item.textChanged = ^(NSString *text) {
         weakSelf.datas[indexPath.row].show = text;
@@ -103,10 +102,10 @@
     return item;
 }
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return (_type == MoreInputTypeSingleChoice) ? MIN(self.datas.count, 1) : self.datas.count;
+    return (_type == MoreSelectTypeSingle) ? MIN(self.datas.count, 1) : self.datas.count;
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (_type == MoreInputTypeWatch) return;
+    if (_type == MoreSelectTypeNone) return;
     [_datas removeObjectAtIndex:indexPath.row];
     [self.collection reloadData];
 }

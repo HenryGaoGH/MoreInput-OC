@@ -11,23 +11,23 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef enum : NSUInteger {
-    MoreInputTypeWatch,         // 不可编辑的概念: 不能添加&修改&删除
-    MoreInputTypeSingleChoice,  // 选择一个或者输入一个  如果设置ignoreInput 则只能选择一个
-    MoreInputTypeMoreChoice,    // 多选 如果设置ignoreInput 则只能多选
-} MoreInputType;
+    MoreSelectTypeNone,         // 不允许选择
+    MoreSelectTypeSingle,       // 选择一个或者输入一个
+    MoreSelectTypeMore,         // 多选 如果设置ignoreInput 则只能多选
+} MoreSelectType;
 
 @interface MoreInput : UIView
 
 /// 设置 选择类型
-@property(nonatomic,assign) MoreInputType type;
+@property(nonatomic,assign) MoreSelectType type;
 
-/// 设置 输入类型 输入数字 defult: string
-@property(nonatomic,assign) BOOL inputNumber;
-
-/// 忽略输入的内容
+/// 忽略输入的内容 (是不是 将输入的内容 设置 成选择内容)
 @property(nonatomic,assign) BOOL ignoreInput;
 
-/// 选择发生改变 回掉 参数为当前的选中数据
+/// 设置 键盘是不是数字 defult: string
+@property(nonatomic,assign) BOOL inputNumber;
+
+/// 选择发生改变 回掉 参数为当前的选中数据 InputRow
 @property(nonatomic,copy) InputBack changedBack;
 
 /// 当前选中的数据
