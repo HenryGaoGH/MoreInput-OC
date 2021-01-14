@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '9.0'
 
-  s.source_files  = "Classes", "Classes/*.{h,m,xib}"
+  s.source_files  = "*","Classes", "Classes/*.{h,m,xib}"
   s.exclude_files = "Classes/Exclude"
   # s.resource_bundles = {
   #   'MoreInput-OC' => ['MoreInput-OC/Assets/*.png']
