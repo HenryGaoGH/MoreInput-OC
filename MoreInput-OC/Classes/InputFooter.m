@@ -92,7 +92,6 @@
 #pragma mark - table
 @interface InputFooter (Table) <UITableViewDelegate,UITableViewDataSource> @end
 @implementation InputFooter (Table)
-
 - (UITableView *)selectTable {
     if (!_selectTable) {
         UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
