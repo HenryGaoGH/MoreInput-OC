@@ -10,7 +10,8 @@ Pod::Spec.new do |spec|
   spec.author             = { "HenryGaoGH" => "yoyohenrygao@163.com" }
   spec.platform     = :ios,"9.0"
   spec.source       = { :git => "https://github.com/HenryGaoGH/MoreInput-OC.git", :tag => "#{spec.version}" }
-  spec.source_files  = "MoreInput-OC/Classes","Classes","*","Classes/**/*.{.h,.m,.xib}","MoreInput-OC/Classes/**/*.{.h,.m,.xib}"
+  spec.source_files  = "MoreInput-OC/Classes",
+  
   spec.framework  = "UIKit"
 
 end
